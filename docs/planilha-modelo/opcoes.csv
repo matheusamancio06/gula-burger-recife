@@ -1,0 +1,13 @@
+aplica a,grupo,obrigatorio,multiplo,min,max,opcao,preco,ajuda
+Hambúrgueres,Ponto da carne,sim,não,,,Mal passada,0,Como você prefere a carne?
+Hambúrgueres,Ponto da carne,sim,não,,,Ao ponto,0,
+Hambúrgueres,Ponto da carne,sim,não,,,Bem passada,0,
+Hambúrgueres,Adicionais,não,sim,0,2,Bacon extra,5.00,Turbine o seu hambúrguer
+Hambúrgueres,Adicionais,não,sim,0,2,Queijo extra,3.00,
+Hambúrgueres,Adicionais,não,sim,0,2,Ovo,4.00,
+Batata Exemplo,Tamanho,sim,não,,,Pequena,0,
+Batata Exemplo,Tamanho,sim,não,,,Grande,8.00,O valor é somado ao preço da porção
+Refrigerante Exemplo,Sabor,sim,não,,,Cola,0,
+Refrigerante Exemplo,Sabor,sim,não,,,Guaraná,0,
+Combo Exemplo,Bebida do combo,sim,não,,,Cola,0,
+Combo Exemplo,Bebida do combo,sim,não,,,Guaraná,0,

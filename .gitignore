@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.DS_Store
+Thumbs.db
+
+# Só no computador de quem criou (não vai para o GitHub)
+comercial/
+artifacts/
+.claude/
+
+# Arquivos de entrega e segredos
+*.zip
+.env
+.env.*

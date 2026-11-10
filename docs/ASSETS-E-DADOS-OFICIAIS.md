@@ -1,0 +1,42 @@
+# Atualização de assets e dados da Gula Burger
+
+## Logo e favicon
+
+- O logo enviado está em `public/brand/gula-burger-logo.jpg` e aparece no cabeçalho e no rodapé. `src/siteConfig.js` contém `brand.logoPath`; substitua por uma versão oficial em SVG ou PNG transparente se ela for fornecida depois.
+- Os ícones do navegador e do celular são `public/favicon-48.png` e `public/apple-touch-icon.png`, gerados a partir do JPG do logo (`scripts/gerar-imagens-de-compartilhamento.ps1`) e ligados no `<head>` por `src/seo.js`. Se o logo mudar, rode o script de novo; uma versão vetorial ou PNG de maior qualidade (o JPG atual tem só 150 px) melhora os ícones.
+
+## Fotografias
+
+- Os identificadores das fotos demonstrativas ficam em `siteConfig.photos`, em `src/siteConfig.js`. Cada entrada aceita `localPath`, por exemplo `/images/hero-gula.webp`, que tem prioridade sobre a foto remota do Unsplash.
+- Para publicação, coloque fotos autorizadas e otimizadas em `public/images/`, preencha `localPath` e remova `sourceId` quando a referência externa não for mais necessária. A foto do Hero é carregada com prioridade (há também um `preload` em `index.html`, apontando para a versão `.avif`, que precisa corresponder ao arquivo de `siteConfig.photos.hero`; ao trocar a foto principal, atualize o nome ali); as imagens das seções abaixo dele são lazy. Hoje o Hero usa `public/images/hero-bg.jpg` como fundo, com o hambúrguer à direita; a foto é exibida sem degradê nem filtro por cima, então a legibilidade do texto depende da própria imagem (e das sombras de texto em `src/styles/site.css`). Ao trocar a foto, ajuste `object-position` em `.hero-bg img` e confira o contraste do título, do parágrafo e dos botões. No celular e no tablet (até 900 px) o Hero usa uma versão vertical (`siteConfig.photos.heroMobile`, hoje `public/images/hero-bg-mobile.jpg`, 704 × 1520 px) escolhida por `<picture>` em `src/App.jsx`; o `preload` de `index.html` também diferencia celular e desktop por `media`. Para a vertical funcionar, o hambúrguer deve ficar na metade de baixo e o topo deve ser só fundo desfocado, pois o texto fica por cima; `.hero-art` reserva o espaço do hambúrguer: sua altura (`--hero-art`) é calculada em `src/App.jsx` a partir do tamanho do texto, para o texto nunca ficar sobre o hambúrguer (se a foto vertical mudar, ajuste a margem de 48 px nessa conta e o `object-position` em `.hero-bg img`). O recomendado é 1170 × 2532 px (proporção ~9:19,5), JPG/WebP abaixo de 250 KB.
+- As fotos atuais são ilustrativas, hospedadas no Unsplash e não são registros oficiais dos produtos da Gula.
+
+## Cardápio e unidades
+
+- Há dois cardápios independentes. `src/showcaseData.js` alimenta a seção **Destaques do site** (`/#destaques`): nome, categoria, descrição, ingredientes (`null` mostra "A confirmar"), imagem e `theme` (cores de fundo, luz e detalhe da seção quando aquele prato está no centro) de cada alimento, sem preço nem pedido. São no máximo 7 destaques; a foto aparece cortada em círculo, então o ideal é um prato bem centralizado. `src/order/orderMenu.js` alimenta o **cardápio de pedidos** (`/pedir/`): nomes, categorias, preços, grupos de opções, disponibilidade e imagem. Quando um prato mudar, atualize os dois arquivos.
+- Os 12 itens atuais dos dois arquivos têm `isDemo: true` e dados fictícios. Só substitua por conteúdo aprovado e remova a marcação demonstrativa depois de confirmar o canal oficial de atendimento.
+- Nos Destaques, cada item só apresenta o prato e leva ao cardápio de pedidos (`siteConfig.links.order`). Nenhum item fictício é enviado ao canal oficial e nada é cobrado. Ao trocar uma foto, ajuste também o `theme` do item com cores da própria foto (fundo bem escuro; detalhe claro, pois o texto da seção é branco).
+- `siteConfig.units` em `src/siteConfig.js` guarda endereço, horário (`schedule`, formato em `docs/ATIVAR-PEDIDOS.md`), mapa e link de pedido por unidade. Campos ainda não confirmados permanecem `null` e a interface sinaliza que aguardam confirmação; com `schedule` preenchido o site mostra "Aberto agora" e bloqueia pedidos fora do horário.
+- Os canais atuais (Instagram e Linktree) estão em `siteConfig.links`. Preserve-os até receber novos canais confirmados.
+
+## Publicação e compartilhamento
+
+- Título, descrição, Open Graph, imagem de prévia, dados estruturados, `robots.txt` e `sitemap.xml` são gerados no build a partir de `src/siteConfig.js` (`site`, `seo`). Falta preencher `site.url` quando o domínio existir. Veja `docs/GOOGLE-E-COMPARTILHAMENTO.md` e rode `npm run check:seo`.
+- As fontes (DM Sans, Barlow Condensed e Permanent Marker) são hospedadas no próprio site, em `src/assets/fonts/`, declaradas em `src/styles/fonts.css` (licença SIL OFL em `src/assets/fonts/LICENCAS.txt`); não há mais requisição ao Google Fonts. Só estão incluídos os pesos usados (Barlow Condensed 700 e 900; DM Sans variável). Para usar outro peso de Barlow Condensed, baixe o arquivo `latin` do pacote `@fontsource/barlow-condensed` e declare em `fonts.css`.
+- **Foto nova (fluxo):** coloque o JPG em `public/images/`, rode `npm run otimizar:imagens` (gera AVIF e WebP, em média 60 a 75% menores) e declare `localPath` e `formats: ['avif', 'webp']` em `siteConfig.photos`. Depois confira com `npm run check:desempenho`. A imagem de prévia `share.jpg` continua JPG (o WhatsApp exige).
+
+## Área de pedidos demonstrativa (Fase 6)
+
+- `/pedir/` é uma página separada do site: `pedir/index.html` carrega `src/order/main.jsx`, que renderiza `src/order/OrderApp.jsx`, com estilos próprios em `src/styles/order.css` (o site usa `index.html`, `src/main.jsx` e `src/styles/site.css`; os dois compartilham `src/styles/base.css` e `src/siteConfig.js`). O `vite.config.js` gera as duas páginas no build e redireciona `/pedir` e `/cardapio` para `/pedir/`. CTAs de pedido na landing page apontam para `siteConfig.links.order`.
+- Busca, categorias e produtos vêm da **planilha do Google** quando `siteConfig.orders.menuSheet` está preenchido (`docs/PLANILHA-DE-CARDAPIO.md`; leitor em `src/order/sheetMenu.js` e carregador, com cópia de reserva, em `src/order/menu.js`) ou, sem planilha, de `src/order/orderMenu.js`. Cada produto expõe `optionGroups` com `required`, `multiple`, `min`, `max` e opções. Os grupos atuais são genéricos e fictícios; substituir por dados aprovados antes de qualquer uso comercial.
+- A sacola, edição de escolhas, observações, quantidades e revisão funcionam como simulação e ficam no `localStorage` sob a chave `gula-order-demo-v1`. Para limpar a prévia durante o desenvolvimento, apague essa chave nas ferramentas do navegador.
+- Não há checkout próprio nem pagamento online: o pedido é finalizado por conversa no WhatsApp. A conclusão fica bloqueada enquanto houver itens `isDemo` em `src/order/orderMenu.js` ou enquanto `siteConfig.orders.whatsappNumber` for `null`. Quando os dois estiverem resolvidos, a revisão pede nome e (na entrega) endereço e abre `https://wa.me/<número>?text=<mensagem>` com o pedido montado por `src/order/whatsapp.js` (itens, opções, observações, unidade, atendimento e total). O número deve conter só dígitos, com DDI e DDD (ex.: `5581999999999`). O canal Linktree permanece acessível em `siteConfig.links.orderHub`.
+- Antes de liberar para clientes, confirme com a Gula: os preços e adicionais reais, as modalidades (retirada e/ou entrega), a unidade que atende cada região, taxas de entrega e a forma de pagamento (combinada na conversa). A página não calcula frete nem taxa.
+- As capturas de validação da página de pedidos estão em `artifacts/review/phase6/` (pasta só local, fora do GitHub).
+
+## Refinamento da experiência de pedidos (Fase 7)
+
+- Com uma única unidade (Casa Forte, hoje) ela já vem selecionada e aparece como texto fixo em `/pedir/`; com mais de uma, a unidade pode ser escolhida antes da sacola e reaparece na revisão. Sua seleção fica no `localStorage` sob `gula-order-unit-v1`; os endereços continuam vindo apenas de `siteConfig.units`.
+- Opções obrigatórias começam sem seleção e bloqueiam a inclusão até que uma escolha válida seja feita. O limite máximo de cada grupo múltiplo continua configurável em `src/order/orderMenu.js`.
+- A revisão resume unidade, itens, quantidades, personalizações, observações e valores. Preços não confirmados permanecem como “Valor a confirmar”, e o checkout real segue indisponível.
+- O botão de adicionar acompanha a rolagem do painel mobile; animações respeitam `prefers-reduced-motion`. Capturas atualizadas ficam em `artifacts/review/phase7/` (pasta só local, fora do GitHub).

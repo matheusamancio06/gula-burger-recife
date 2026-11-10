@@ -1,0 +1,7 @@
+nome,categoria,descricao,preco,disponivel,foto,id
+Hambúrguer Exemplo,Hambúrgueres,"Pão brioche, carne, queijo e molho da casa (texto de exemplo)",29.90,sim,,
+Hambúrguer Duplo Exemplo,Hambúrgueres,"Duas carnes, queijo e molho (texto de exemplo)",39.90,sim,,
+Combo Exemplo,Combos,"Hambúrguer, batata e bebida (texto de exemplo)",44.90,sim,,
+Batata Exemplo,Acompanhamentos,"Porção de batata frita (texto de exemplo)",18.00,sim,,
+Refrigerante Exemplo,Bebidas,"Lata 350 ml (texto de exemplo)",6.00,sim,,
+Sobremesa Exemplo,Sobremesas,"Item marcado como esgotado, só para mostrar como aparece",12.00,não,,
